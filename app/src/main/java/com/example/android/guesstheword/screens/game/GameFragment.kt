@@ -17,6 +17,7 @@
 package com.example.android.guesstheword.screens.game
 
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
+import kotlinx.android.synthetic.main.game_fragment.view.*
 
 /**
  * Fragment where the game is played
@@ -69,6 +71,10 @@ class GameFragment : Fragment() {
 
         // TODO (07) Setup an observer relationship to update binding.timerText
         // You can use DateUtils.formatElapsedTime to correctly format the long to a time string
+        viewModel.currentTime.observe(this, Observer { newTime ->
+            DateUtils.formatElapsedTime(newTime)
+            binding.timerText.text = ((newTime/1000)%5+1).toString()
+        })
 
         // Sets up event listening to navigate the player when the game is finished
         viewModel.eventGameFinish.observe(this, Observer { isFinished ->
