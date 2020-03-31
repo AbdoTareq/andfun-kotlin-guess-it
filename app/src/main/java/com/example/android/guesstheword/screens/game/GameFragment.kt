@@ -62,11 +62,11 @@ class GameFragment : Fragment() {
         // ViewModel and calling observe. Make sure to pass in *this* and then an Observer lambda
 
         viewModel.score.observe(this, Observer { newScore ->
-            binding.scoreText.text = viewModel.score.toString()
+            binding.scoreText.text = newScore.toString()
         })
 
         viewModel.word.observe(this, Observer { newWord ->
-            binding.wordText.text = viewModel.word.toString()
+            binding.wordText.text = newWord
         })
 
         return binding.root
