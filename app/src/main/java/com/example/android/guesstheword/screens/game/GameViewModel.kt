@@ -28,10 +28,26 @@ class GameViewModel : ViewModel() {
 
     // TODO (01) Wrap word and score in MutableLiveData
     // The current word
-    val word = MutableLiveData<String>()
+    private val _word = MutableLiveData<String>()
 
-    // The current score
-    val score = MutableLiveData<Int>()
+    //external
+    val word: LiveData<String>
+        get() = _word
+
+    // internal
+    private val _score = MutableLiveData<Int>()
+
+    //external
+    val score: LiveData<Int>
+        get() = _score
+
+    // internal
+    private val _gameFinished = MutableLiveData<Boolean>()
+
+    //external
+    val gameFinished: LiveData<Boolean>
+        get() = _gameFinished
+
     // TODO (02) Change references to score and word to score.value and word.value and add the
     // require null safety checks
 
@@ -43,7 +59,9 @@ class GameViewModel : ViewModel() {
         resetList()
         nextWord()
         // TODO (03) Initialize score.value to 0
-        score.value = 0
+        _score.value = 0
+        _gameFinished.value = false
+
     }
 
     /**
@@ -83,20 +101,26 @@ class GameViewModel : ViewModel() {
         //Select and remove a word from the list
         if (wordList.isEmpty()) {
             // gameFinished() should happen here
+            _gameFinished.value = true
         } else {
-            word.value = wordList.removeAt(0)
+            _word.value = wordList.removeAt(0)
         }
     }
 
     /** Methods for buttons presses **/
 
     fun onSkip() {
-        score.value = (score.value)?.minus(1)
+        _score.value = (score.value)?.minus(1)
         nextWord()
     }
 
     fun onCorrect() {
-        score.value = (score.value)?.plus(1)
+        _score.value = (score.value)?.plus(1)
         nextWord()
+    }
+
+    fun onGameFinishComplete() {
+        _gameFinished.value = false
+
     }
 }
